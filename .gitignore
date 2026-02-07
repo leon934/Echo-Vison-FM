@@ -4,3 +4,5 @@ checkpoints/
 data/
 check_data/
 *.jpg
+.venv
+.DS_Store

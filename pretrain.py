@@ -18,12 +18,13 @@ from pl_bolts.optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 # from pytorch_lightning import seed_everything
 
 from datasets.mimic import MimicEchoDataset, MIMICECHOIterableDataset
+from datasets.echonet import EchonetDynamicDataset
 from modeling.videomae import get_videomae_for_pretraining
 from utilities.utils import remove_directory
 
 
 
-PRETRAIN_CHECKPOINTS_DIR = "/projects/p32335/my_research/echo_vision/checkpoints/checkpoints_pretrain_new/"
+PRETRAIN_CHECKPOINTS_DIR = "./checkpoints/checkpoints_pretrain_new/"
 
 def get_args():
 
@@ -173,14 +174,22 @@ def main():
     base_ckpt_dir = PRETRAIN_CHECKPOINTS_DIR
     os.makedirs(base_ckpt_dir, exist_ok=True)
 
-    data_dir = "/home/olg7848/p32335/MIMIC-ECHO/mimic_echo_avi"
-    data_dir = Path(data_dir)
+    # data_dir = "/home/olg7848/p32335/MIMIC-ECHO/mimic_echo_avi"
+    # data_dir = Path(data_dir)
 
-    dataset = MimicEchoDataset(
+    # dataset = MimicEchoDataset(
+    #     data_dir,
+    #     frames_count=16,
+    #     data_ratio=args.data_ratio,
+    #     decord=True,
+    # )
+
+    data_dir = Path("./EchoNet-Dynamic")
+    
+    dataset = EchonetDynamicDataset(
         data_dir,
         frames_count=16,
-        data_ratio=args.data_ratio,
-        decord=True,
+        data_ratio=args.data_ratio
     )
 
     print(len(dataset))
@@ -201,7 +210,7 @@ def main():
     model = get_videomae_for_pretraining()
 
     ###========train model on mimic dataset and save checkpoint========###
-    train_function(model, dataloader, base_ckpt_dir, args)
+    # train_function(model, dataloader, base_ckpt_dir, args)
 
 
 
